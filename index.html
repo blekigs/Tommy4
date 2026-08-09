@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://api.fontshare.com" />
+<link href="https://api.fontshare.com/v2/css?f[]=zodiak@400,700,800&f[]=switzer@400,500,600,700&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; background: #100e0c; }
+  * { box-sizing: border-box; }
+  a { color: #8C4A22; text-decoration: none; }
+  a:hover { color: #6E381A; }
+  button { font: inherit; }
+  input, textarea, select { font: inherit; }
+  #om-scroll::-webkit-scrollbar { width: 8px; }
+  #om-scroll::-webkit-scrollbar-thumb { background: #3a332c; border-radius: 4px; }
+  @keyframes pulseDot { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+</style>
+</helmet>
+
+<div style="height: 100vh; display: flex; flex-direction: column; background: #100e0c; font-family: 'Switzer', system-ui, sans-serif;">
+
+  <div style="flex: 0 0 auto; display: flex; align-items: center; gap: 18px; padding: 8px 14px; background: #17140f; border-bottom: 1px solid #D9CDBB; flex-wrap: wrap;">
+    <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #6B5F52;">Richtung</span>
+    <div style="display: flex; gap: 6px;">
+      <sc-for list="{{ dirs }}" as="d" hint-placeholder-count="3">
+        <button onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</button>
+      </sc-for>
+    </div>
+    <span style="width: 1px; height: 22px; background: #D9CDBB;"></span>
+    <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #6B5F52;">Ansicht</span>
+    <div style="display: flex; gap: 6px;">
+      <sc-for list="{{ vps }}" as="v" hint-placeholder-count="2">
+        <button onClick="{{ v.pick }}" style="{{ v.style }}">{{ v.label }}</button>
+      </sc-for>
+    </div>
+    <span style="width: 1px; height: 22px; background: #D9CDBB;"></span>
+    <span style="font-size: 12px; color: #6B5F52; max-width: 420px; line-height: 1.4;">{{ dirNote }}</span>
+    <span style="margin-left: auto; font-family: 'Switzer'; font-size: 11px; letter-spacing: .1em; color: #6B5F52;">FUSION {{ pPct }}%</span>
+  </div>
+
+  <div style="flex: 1 1 auto; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 0; background: #100e0c;">
+    <div style="{{ frameStyle }}">
+      <div id="om-scroll" ref="{{ scrollRef }}" onScroll="{{ onScroll }}" style="{{ scrollStyle }}">
+
+        <div style="position: absolute; inset: 0; pointer-events: none; z-index: 40; mix-blend-mode: multiply; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22220%22 height=%22220%22 filter=%22url(%23n)%22/></svg>'); background-size: 220px 220px; opacity: 0.055;"></div>
+
+        <header style="{{ headerStyle }}">
+          <a href="#top" style="display: flex; align-items: center; gap: 11px; text-decoration: none; flex: 0 0 auto;">
+            <img src="uploads/fotos-1786294814635-7w30.png" alt="Logo Holz- und Elektrobau Schröder" style="width: 34px; height: 34px; object-fit: contain; flex: 0 0 auto;" />
+            <span style="display: flex; flex-direction: column; line-height: 1.05; white-space: nowrap;">
+              <span style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 17px; color: #2A231C; letter-spacing: .005em;">Holz- &amp; Elektrobau</span>
+              <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .28em; text-transform: uppercase; color: #8C4A22;">Schröder</span>
+            </span>
+          </a>
+
+          <nav style="{{ navStyle }}" aria-label="Hauptnavigation">
+            <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+              <a href="{{ n.href }}" style="font-size: 15px; font-weight: 500; color: #2A231C; text-decoration: none; padding: 6px 2px; border-bottom: 1px solid transparent;" style-hover="border-bottom: 1px solid #A85C2E; color: #2A231C;">{{ n.label }}</a>
+            </sc-for>
+          </nav>
+
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <a href="tel:+4915788141476" aria-label="Anrufen: 0157 88141476" style="{{ telStyle }}">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2.5 3.2c-.4 3.6 3.1 8.4 6.9 9.9.9.4 2.1-.3 2.4-1.2.2-.6-.3-1-1.5-1.6-.9-.4-1.3-.2-1.8.4-1.4-.7-2.7-2.1-3.3-3.5.7-.4.9-.8.5-1.7C5.1 4.3 4.7 3.7 4 3.9c-.7.2-1.4.6-1.5-.7z" stroke="#F4EEE6" stroke-width="1.3" stroke-linejoin="round" /></svg>
+              <span style="{{ telTextStyle }}">0157 88141476</span>
+            </a>
+            <button onClick="{{ toggleMenu }}" aria-label="Menü" style="{{ burgerStyle }}">
+              <span style="display: block; width: 20px; height: 1.5px; background: #2A231C; margin: 0 auto;"></span>
+              <span style="display: block; width: 20px; height: 1.5px; background: #2A231C; margin: 5px auto 0;"></span>
+              <span style="display: block; width: 14px; height: 1.5px; background: #A85C2E; margin: 5px auto 0;"></span>
+            </button>
+          </div>
+        </header>
+
+        <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="position: sticky; top: 62px; z-index: 45; background: #F4EEE6; border-bottom: 1px solid #D9CDBB; padding: 14px 20px 20px; display: flex; flex-direction: column; gap: 2px;">
+            <sc-for list="{{ nav }}" as="n" hint-placeholder-count="5">
+              <a href="{{ n.href }}" onClick="{{ closeMenu }}" style="font-family: 'Zodiak', Georgia, serif; font-size: 22px; color: #2A231C; text-decoration: none; padding: 11px 0; border-bottom: 1px solid #DED3C2;">{{ n.label }}</a>
+            </sc-for>
+            <a href="https://wa.me/4915788141476" style="margin-top: 14px; text-align: center; padding: 15px; background: #A85C2E; color: #FFFFFF; font-weight: 600; border-radius: 2px; text-decoration: none;">Per WhatsApp schreiben</a>
+          </div>
+        </sc-if>
+
+        <div id="top" style="{{ runwayStyle }}">
+          <div style="{{ heroPinStyle }}">
+
+            <div style="position: absolute; inset: 0; background: #F4EEE6;"></div>
+            <div style="position: absolute; inset: 0; overflow: hidden;">
+              <img src="uploads/fotos-1786294815850-l45r.png" alt="Fertig verdrahteter Zählerschrank mit beschrifteten Sicherungsautomaten" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .3; filter: grayscale(.3) contrast(1.05) brightness(.55);" />
+              <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,74,102,.62) 0%, rgba(26,64,88,.9) 58%, #163B52 100%);"></div>
+            </div>
+
+            <div style="{{ woodStyle }}">
+              <img src="uploads/fotos-1786294827269-j62b.png" alt="Massivholztür in der Tischlerei, Stemmeisen und Hobelspäne auf der Werkbank" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .42;" />
+              <div style="position: absolute; inset: 0; background: linear-gradient(165deg, rgba(238,219,193,.45) 0%, rgba(206,168,114,.84) 70%, #C49A63 100%);"></div>
+            </div>
+
+            <div style="{{ fuseVeilStyle }}"></div>
+            <div style="{{ seamStyle }}"></div>
+            <div style="{{ seamGlowStyle }}"></div>
+
+            <div style="{{ heroGridStyle }}">
+              <div style="{{ heroColLStyle }}">
+                <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #6B4A2A;">01 — Tischlerei</span>
+                <h2 style="{{ heroH2Style }}">Massivholz,<br />nach Aufmaß.</h2>
+                <p style="{{ heroLeadL }}">Einbaumöbel, Innenausbau, Türen. Gefertigt in der eigenen Werkstatt, montiert von denen, die es gebaut haben.</p>
+                <a href="#leistungen" onClick="{{ pickTischler }}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border: 1px solid #7A5730; color: #2A231C; font-weight: 600; font-size: 15px; text-decoration: none; border-radius: 2px;" style-hover="background: #2A231C; color: #C49A63; border-color: #2A231C;">Tischlerei
+                  <span style="font-size: 17px; line-height: 1;">→</span>
+                </a>
+              </div>
+
+              <div style="{{ heroColRStyle }}">
+                <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .3em; text-transform: uppercase; color: #A8C4D6;">02 — Elektrobau</span>
+                <h2 style="{{ heroH2R }}">Strom,<br />nach Vorschrift.</h2>
+                <p style="{{ heroLeadR }}">Installation, Schaltschrankbau, Smart Home. Gemessen, dokumentiert, übergeben mit Protokoll.</p>
+                <a href="#leistungen" onClick="{{ pickElektro }}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border: 1px solid rgba(244,238,230,.6); color: #F4EEE6; font-weight: 600; font-size: 15px; text-decoration: none; border-radius: 2px;" style-hover="background: #2A231C; color: #F4EEE6; border-color: #2A231C;">Elektrobau
+                  <span style="font-size: 17px; line-height: 1;">→</span>
+                </a>
+              </div>
+            </div>
+
+            <div style="{{ heroClaimStyle }}">
+              <h1 style="{{ h1Style }}">Zwei Gewerke.<br />Ein Betrieb.</h1>
+            </div>
+
+            <div style="{{ scrollHintStyle }}">
+              <span style="display: flex; align-items: center; gap: 9px; font-family: 'Switzer'; font-size: 10px; letter-spacing: .26em; text-transform: uppercase; color: #6B5F52;">
+                <span style="width: 6px; height: 6px; border-radius: 50%; background: #A85C2E; animation: pulseDot 2.4s ease-in-out infinite;"></span>
+                Scrollen — die Kante löst sich auf
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <section id="ueber-uns" data-screen-label="Über uns" style="{{ secUeberStyle }}">
+          <div style="{{ ruleStyle }}">{{ rule1 }}</div>
+          <div style="{{ traceStyle }}">{{ traceSvg }}</div>
+          <div style="{{ traceDotStyle }}"></div>
+          <div style="{{ innerStyle }}">
+            <div style="{{ ueberGridStyle }}">
+              <div>
+                <span style="{{ eyebrowStyle }}">Warum beides</span>
+                <h2 style="{{ h2Style }}">Ein Betrieb,<br />zwei Meisterhandwerke.</h2>
+                <p style="font-size: 18px; line-height: 1.7; color: #2A231C; margin: 0 0 20px;">Wir sind Tischler und Elektriker im selben Haus. Wer bei uns eine Einbauküche bestellt, bekommt die Steckdose an der Stelle, an der sie hingehört — ohne dass jemand ein zweites Mal anrücken muss.</p>
+                <p style="font-size: 17px; line-height: 1.7; color: #6B5F52; margin: 0 0 20px;">In der Praxis heißt das: ein Ansprechpartner, ein Termin, ein Angebot. Sie koordinieren keine zwei Firmen, warten nicht darauf, dass der Elektriker Zeit hat, wenn der Schrank schon steht, und tragen keine Schnittstelle aus, für die sich am Ende niemand zuständig fühlt.</p>
+                <p style="font-size: 17px; line-height: 1.7; color: #6B5F52; margin: 0;">Aufmaß, Fertigung, Montage und Anschluss machen wir selbst. Was wir nicht können, sagen wir vorher.</p>
+              </div>
+              <div style="{{ ueberSideStyle }}">
+                <img src="uploads/fotos-1786294827148-w55i.png" alt="Schraube wird in eine Holzständerkonstruktion gesetzt" style="{{ ueberImg1Style }}" />
+                <img src="uploads/fotos-1786294814980-hkvq.png" alt="Geöffnete Abzweigdose mit sauber aufgelegten Klemmen" style="{{ ueberImg2Style }}" />
+              </div>
+            </div>
+
+            <div style="{{ factGridStyle }}">
+              <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+                <div style="{{ f.style }}">
+                  <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .24em; color: #8C4A22;">{{ f.no }}</span>
+                  <h3 style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 24px; color: #2A231C; margin: 10px 0 8px; line-height: 1.2;">{{ f.title }}</h3>
+                  <p style="font-size: 17px; line-height: 1.6; color: #6B5F52; margin: 0;">{{ f.body }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <section id="leistungen" data-screen-label="Leistungen" style="{{ secStyle }}">
+          <div style="{{ ruleStyle }}">{{ rule2 }}</div>
+          <div style="{{ traceStyle }}">{{ traceSvg }}</div>
+          <div style="{{ traceDotStyle }}"></div>
+          <div style="{{ innerStyle }}">
+            <span style="{{ eyebrowStyle }}">Leistungen</span>
+            <h2 style="{{ h2Style }}">Was wir machen.</h2>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin: 34px 0 30px;">
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+                <button onClick="{{ t.pick }}" style="{{ t.style }}">
+                  <span style="{{ t.iconWrap }}">{{ t.icon }}</span>
+                  {{ t.label }}
+                </button>
+              </sc-for>
+            </div>
+
+            <p style="font-size: 18px; line-height: 1.7; color: #2A231C; max-width: 62ch; margin: 0 0 34px; border-left: 2px solid {{ tabAccent }}; padding-left: 18px;">{{ tabIntro }}</p>
+
+            <div style="{{ leistGridStyle }}">
+              <sc-for list="{{ leistungen }}" as="l" hint-placeholder-count="5">
+                <div style="{{ l.style }}">
+                  <div style="display: flex; align-items: baseline; gap: 12px;">
+                    <span style="font-family: 'Switzer'; font-size: 11px; letter-spacing: .18em; color: #6B5F52; flex: 0 0 auto;">{{ l.no }}</span>
+                    <h3 style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 22px; color: #2A231C; margin: 0; line-height: 1.25;">{{ l.title }}</h3>
+                  </div>
+                  <p style="font-size: 17px; line-height: 1.6; color: #6B5F52; margin: 9px 0 0; padding-left: 30px;">{{ l.body }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <section id="galerie" data-screen-label="Galerie" style="{{ secGalStyle }}">
+          <div style="{{ ruleStyle }}">{{ rule3 }}</div>
+          <div style="{{ traceStyle }}">{{ traceSvg }}</div>
+          <div style="{{ traceDotStyle }}"></div>
+          <div style="{{ innerStyle }}">
+            <span style="{{ eyebrowStyle }}">Galerie</span>
+            <h2 style="{{ h2Style }}">Aus der Werkstatt und von der Baustelle.</h2>
+            <div style="{{ galGridStyle }}">
+              <sc-for list="{{ galerie }}" as="g" hint-placeholder-count="9">
+                <button onClick="{{ g.open }}" style="{{ g.style }}">
+                  <img src="{{ g.src }}" alt="{{ g.alt }}" style="width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.2,.7,.2,1);" style-hover="transform: scale(1.045);" />
+                  <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 30px 14px 12px; background: linear-gradient(180deg, rgba(20,32,42,0), rgba(20,32,42,.92)); font-family: 'Switzer'; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #F4EEE6; text-align: left;">{{ g.cap }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <section id="preise" data-screen-label="Preise" style="{{ secStyle }}">
+          <div style="{{ ruleStyle }}">{{ rule4 }}</div>
+          <div style="{{ traceStyle }}">{{ traceSvg }}</div>
+          <div style="{{ traceDotStyle }}"></div>
+          <div style="{{ innerStyle }}">
+            <h2 style="{{ h2Style }}">Preise auf Anfrage</h2>
+          </div>
+        </section>
+
+        <section id="kontakt" data-screen-label="Kontakt" style="{{ secKontaktStyle }}">
+          <div style="{{ ruleStyle }}">{{ rule5 }}</div>
+          <div style="{{ traceStyle }}">{{ traceSvg }}</div>
+          <div style="{{ traceDotStyle }}"></div>
+          <div style="{{ innerStyle }}">
+            <span style="{{ eyebrowStyle }}">Kontakt</span>
+            <h2 style="{{ h2Style }}">Erzählen Sie,<br />was gebaut werden soll.</h2>
+
+            <div style="{{ kontaktGridStyle }}">
+              <form onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 16px;">
+                <label style="display: flex; flex-direction: column; gap: 7px;">
+                  <span style="font-family: 'Switzer'; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6B5F52;">Name</span>
+                  <input type="text" name="name" required="required" placeholder="Vor- und Nachname" style="padding: 14px 15px; background: #FBF7F1; border: 1px solid #D9CDBB; border-radius: 2px; color: #2A231C; font-size: 17px; outline: none;" style-focus="border-color: #A85C2E; background: #FFFDF9;" />
+                </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                  <label style="display: flex; flex-direction: column; gap: 7px;">
+                    <span style="font-family: 'Switzer'; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6B5F52;">Telefon</span>
+                    <input type="tel" name="tel" required="required" placeholder="Für Rückfragen" style="padding: 14px 15px; background: #FBF7F1; border: 1px solid #D9CDBB; border-radius: 2px; color: #2A231C; font-size: 17px; outline: none;" style-focus="border-color: #A85C2E; background: #FFFDF9;" />
+                  </label>
+                  <label style="display: flex; flex-direction: column; gap: 7px;">
+                    <span style="font-family: 'Switzer'; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6B5F52;">E-Mail</span>
+                    <input type="email" name="mail" placeholder="Optional" style="padding: 14px 15px; background: #FBF7F1; border: 1px solid #D9CDBB; border-radius: 2px; color: #2A231C; font-size: 17px; outline: none;" style-focus="border-color: #A85C2E; background: #FFFDF9;" />
+                  </label>
+                </div>
+                <label style="display: flex; flex-direction: column; gap: 7px;">
+                  <span style="font-family: 'Switzer'; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6B5F52;">Gewerk</span>
+                  <select name="gewerk" style="padding: 14px 15px; background: #FBF7F1; border: 1px solid #D9CDBB; border-radius: 2px; color: #2A231C; font-size: 17px; outline: none;" style-focus="border-color: #A85C2E;">
+                    <option>Tischlerei</option>
+                    <option>Elektrobau</option>
+                    <option>Beides zusammen</option>
+                    <option>Weiß ich noch nicht</option>
+                  </select>
+                </label>
+                <label style="display: flex; flex-direction: column; gap: 7px;">
+                  <span style="font-family: 'Switzer'; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #6B5F52;">Nachricht</span>
+                  <textarea name="msg" rows="5" placeholder="Was steht an? Räume, Maße, Termin — je konkreter, desto genauer das Angebot." style="padding: 14px 15px; background: #FBF7F1; border: 1px solid #D9CDBB; border-radius: 2px; color: #2A231C; font-size: 17px; line-height: 1.55; outline: none; resize: vertical;" style-focus="border-color: #A85C2E; background: #FFFDF9;"></textarea>
+                </label>
+                <button type="submit" style="align-self: flex-start; padding: 16px 30px; background: #A85C2E; color: #FFFFFF; font-weight: 700; font-size: 16px; border: none; border-radius: 2px; cursor: pointer;" style-hover="background: #8C4A22;">{{ submitLabel }}</button>
+                <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+                  <p style="font-size: 16px; color: #8C4A22; margin: 0;">Prototyp — hier würde die Anfrage rausgehen.</p>
+                </sc-if>
+              </form>
+
+              <aside style="display: flex; flex-direction: column; gap: 26px;">
+                <div>
+                  <h3 style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 22px; color: #2A231C; margin: 0 0 14px;">Direkt erreichbar</h3>
+                  <div style="display: flex; flex-direction: column; gap: 11px;">
+                    <a href="tel:+4915788141476" style="font-size: 19px; font-weight: 600; color: #2A231C; text-decoration: none;" style-hover="color: #6E381A;">0157 88141476</a>
+                    <a href="https://wa.me/4915788141476" style="font-size: 17px; color: #8C4A22; text-decoration: none;" style-hover="color: #6E381A;">WhatsApp — 0157 88141476</a>
+                    <a href="mailto:Test@schröder.de" style="font-size: 17px; color: #2A231C; text-decoration: none;" style-hover="color: #6E381A;">Test@schröder.de</a>
+                  </div>
+                </div>
+                <div>
+                  <h3 style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 22px; color: #2A231C; margin: 0 0 12px;">Öffnungszeiten</h3>
+                  <div style="display: flex; justify-content: space-between; gap: 20px; max-width: 320px; padding: 9px 0; border-bottom: 1px solid #DED3C2;">
+                    <span style="font-size: 17px; color: #6B5F52;">Montag – Freitag</span>
+                    <span style="font-size: 17px; color: #2A231C; font-weight: 600;">8:00 – 16:00</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; gap: 20px; max-width: 320px; padding: 9px 0;">
+                    <span style="font-size: 17px; color: #6B5F52;">Samstag, Sonntag</span>
+                    <span style="font-size: 17px; color: #6B5F52;">geschlossen</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 22px; color: #2A231C; margin: 0 0 12px;">Werkstatt</h3>
+                  <div style="border: 1px solid #D9CDBB; border-radius: 2px; overflow: hidden; background: #FBF7F1;">
+                    <iframe title="Karte mit dem Standort der Werkstatt" src="https://maps.google.com/maps?q=Deutschland&amp;z=6&amp;output=embed" style="width: 100%; height: 260px; border: 0; display: block; filter: saturate(.85) contrast(1.02);" loading="lazy"></iframe>
+                    <p style="margin: 0; padding: 11px 13px; font-family: 'Switzer'; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6B5F52; border-top: 1px solid #D9CDBB;">Kartenausschnitt Platzhalter — echte Adresse fehlt noch</p>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <footer data-screen-label="Footer" style="background: #E4D8C6; border-top: 1px solid #D9CDBB; padding: 46px 0 34px;">
+          <div style="{{ innerStyle }}">
+            <div style="display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: flex-start;">
+              <div style="display: flex; align-items: center; gap: 11px;">
+                <img src="uploads/fotos-1786294814635-7w30.png" alt="" style="width: 30px; height: 30px; object-fit: contain;" />
+                <span style="display: flex; flex-direction: column; line-height: 1.15;">
+                  <span style="font-family: 'Zodiak', Georgia, serif; font-weight: 700; font-size: 16px; color: #2A231C;">Holz- &amp; Elektrobau Schröder</span>
+                  <span style="font-size: 14px; color: #574C41;">Tischlerei und Elektrobau aus einer Hand</span>
+                </span>
+              </div>
+              <div style="display: flex; gap: 26px; flex-wrap: wrap;">
+                <a href="#impressum" style="font-size: 15px; color: #574C41; text-decoration: none;" style-hover="color: #8C4A22;">Impressum</a>
+                <a href="#datenschutz" style="font-size: 15px; color: #574C41; text-decoration: none;" style-hover="color: #8C4A22;">Datenschutz</a>
+                <a href="#instagram" style="font-size: 15px; color: #574C41; text-decoration: none;" style-hover="color: #8C4A22;">Instagram</a>
+                <a href="#facebook" style="font-size: 15px; color: #574C41; text-decoration: none;" style-hover="color: #8C4A22;">Facebook</a>
+              </div>
+            </div>
+            <p style="margin: 30px 0 0; font-size: 14px; color: #574C41;">© 2026 Holz- &amp; Elektrobau Schröder</p>
+          </div>
+        </footer>
+
+        <sc-if value="{{ lightbox }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeLightbox }}" style="position: fixed; inset: 0; z-index: 90; background: rgba(16,14,12,.95); display: flex; align-items: center; justify-content: center; padding: 4vmin; cursor: zoom-out;">
+            <figure style="margin: 0; max-width: 100%; max-height: 100%; display: flex; flex-direction: column; gap: 14px; align-items: center;">
+              <img src="{{ lightboxSrc }}" alt="{{ lightboxAlt }}" style="max-width: 100%; max-height: 78vh; object-fit: contain; border: 1px solid rgba(244,238,230,.2);" />
+              <figcaption style="font-family: 'Switzer'; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: #C9BFB2; text-align: center;">{{ lightboxCap }}</figcaption>
+            </figure>
+            <button onClick="{{ closeLightbox }}" aria-label="Großansicht schließen" style="position: absolute; top: 20px; right: 20px; width: 44px; height: 44px; background: none; border: 1px solid rgba(244,238,230,.35); color: #F4EEE6; font-size: 22px; border-radius: 2px; cursor: pointer;">×</button>
+          </div>
+        </sc-if>
+
+      </div>
+
+      <a href="https://wa.me/4915788141476" aria-label="WhatsApp-Nachricht schreiben" style="{{ waStyle }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#F4EEE6" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm0 2a8 8 0 0 1 0 16 8 8 0 0 1-4.2-1.2l-.5-.3-2.4.7.7-2.3-.3-.5A8 8 0 0 1 12 4zm-3.4 4c-.3 0-.7.1-.9.4-.3.4-.6.9-.6 1.6 0 1.5 1.1 3 1.3 3.2.2.3 2 3 4.8 4 1.3.5 2 .5 2.6.4.5-.1 1.2-.6 1.4-1.2.2-.6.2-1 .1-1.1l-1.7-.8c-.2-.1-.4-.1-.6.1l-.7.9c-.1.2-.3.2-.5.1-.6-.2-1.6-.7-2.4-1.9-.2-.2-.1-.4 0-.5l.5-.6c.1-.2.1-.3 0-.5l-.7-1.6c-.2-.4-.4-.4-.6-.4h-.5z" /></svg>
+      </a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+const COPPER = "#A85C2E";
+const COPPER_INK = "#8C4A22";
+const ANTH = "#F4EEE6";
+const CREAM = "#2A231C";
+const SEC = "#6B5F52";
+
+const DIRS = {
+  a: { label: "A — Werkbank", note: "Stark texturiert · Kante wandert und franst aus · versetztes Layout" },
+  b: { label: "B — Leiterbahn", note: "Mittlere Rauheit · Kupfer-Naht verzahnt die Hälften · strenges Raster" },
+  c: { label: "C — Fluss", note: "Fast clean · Farbfluss ohne harte Kante · asymmetrisch, viel Weißraum" }
+};
+
+const GAL = [
+  { src: "uploads/fotos-1786294815247-nz8p.png", cap: "Innentür, Eiche furniert", alt: "Heller Raum mit neuer Holztür, Holzfenstern und Laminatboden" },
+  { src: "uploads/fotos-1786294816256-isnf.png", cap: "Wohnhaus, Außenbeleuchtung", alt: "Holzverkleidetes Wohnhaus in der Dämmerung mit warmer Außen- und Wegbeleuchtung" },
+  { src: "uploads/fotos-1786294815850-l45r.png", cap: "Zählerschrank, beschriftet", alt: "Zählerschrank mit zwei Reihen Sicherungsautomaten und beschrifteten Stromkreisen" },
+  { src: "uploads/fotos-1786294827269-j62b.png", cap: "Rahmentür in der Werkstatt", alt: "Massivholztür auf der Werkbank, daneben Stemmeisen und Hobelspäne" },
+  { src: "uploads/fotos-1786294815723-0beu.png", cap: "Aufputz, Werkstattbüro", alt: "Aufputz-Installation mit Steckdosen, Schalter und sauber verlegten Leerrohren" },
+  { src: "uploads/fotos-1786294815998-e0r4.png", cap: "Ständerwand, Leitungen gesetzt", alt: "Ständerwand mit Dämmung, verlegter Leitung und gesetzter Schalterdose" },
+  { src: "uploads/fotos-1786294815357-obqw.png", cap: "Werkzeugwand", alt: "Werkzeugwand mit Stemmeisen, Schraubendrehern, Zangen und Messgerät" },
+  { src: "uploads/fotos-1786294814875-785x.png", cap: "Schaltplan, Steuerung", alt: "Schaltplan einer Steuerung mit Messgerät und Prüfspitzen" },
+  { src: "uploads/fotos-1786294815589-im27.png", cap: "Aufmaß und Grundriss", alt: "Grundrisszeichnung mit Zollstock, Lineal und Bleistift auf der Werkbank" }
+];
+
+const SPANS = {
+  a: ["span 2 / span 2", "span 2 / span 1", "span 1 / span 1", "span 1 / span 2", "span 1 / span 1", "span 2 / span 1", "span 1 / span 1", "span 1 / span 1", "span 1 / span 2"],
+  b: ["span 1 / span 1", "span 1 / span 1", "span 2 / span 1", "span 1 / span 2", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1"],
+  c: ["span 2 / span 2", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1", "span 2 / span 2", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1", "span 1 / span 1"]
+};
+
+const LEIST = {
+  tischlerei: {
+    accent: "#A9803F",
+    intro: "Wir bauen für Räume, die es schon gibt — schief gewachsene Wände inklusive. Aufmaß vor Ort, Fertigung in der eigenen Werkstatt, Montage durch dieselben Leute.",
+    items: [
+      ["Einbaumöbel nach Aufmaß", "Schränke, Regale, Sideboards — passgenau bis in die Ecke, mit Fronten aus Massivholz oder furniert."],
+      ["Innenausbau und Trockenbau", "Raumteiler, Nischen, abgehängte Decken, Dachschrägen ausgebaut und verkleidet."],
+      ["Türen und Fenster", "Neue Innentüren, Holzfenster aufgearbeitet oder ersetzt, Zargen und Beschläge eingestellt."],
+      ["Boden und Wandverkleidung", "Parkett und Dielen verlegt und geschliffen, Wandpaneele und Leisten gesetzt."],
+      ["Reparatur und Aufarbeitung", "Ausgerissene Scharniere, quellende Schubladen, alte Oberflächen — reparieren geht oft vor ersetzen."]
+    ]
+  },
+  elektrobau: {
+    accent: "#1D4762",
+    intro: "Vom Zählerschrank bis zur letzten Dose. Wir messen, dokumentieren und übergeben mit Protokoll — im Altbau genauso wie im Rohbau.",
+    items: [
+      ["Elektroinstallation", "Neubau und Altbau, Leitungen neu gezogen, Dosen gesetzt, Kreise aufgeteilt und beschriftet."],
+      ["Schaltschrankbau", "Zählerschränke und Steuerungen aufgebaut, verdrahtet und geprüft, nach Plan oder nach Aufgabe."],
+      ["Smart Home und Bussysteme", "Licht, Rollladen, Heizung geschaltet — kabelgebunden, damit es in zehn Jahren noch läuft."],
+      ["FI und Überspannungsschutz", "Nachrüstung im Bestand, Fehlerstromschutz und Ableiter, wo bisher nur Schmelzsicherungen sitzen."],
+      ["Prüfungen und Messprotokolle", "Anlagenprüfung und Gerätekontrolle mit Messwerten schriftlich, nicht nur mündlich."]
+    ]
+  },
+  kombiniert: {
+    accent: COPPER,
+    intro: "Hier zahlt sich der eine Betrieb aus: Möbel und Strom werden zusammen geplant, nicht nacheinander repariert. Ein Aufmaß, ein Termin, eine Rechnung.",
+    items: [
+      ["Küche komplett", "Korpus, Fronten, Arbeitsplatte — dazu Starkstrom, Steckdosen hinter der Nische und Licht unter den Hängeschränken."],
+      ["Beleuchtete Einbauschränke", "Schrank und Leitung in einem Aufmaß, LED-Profile eingefräst, Trafo unsichtbar untergebracht."],
+      ["Medienmöbel mit Verkabelung", "Sideboard mit Kabelkanal, Netzwerkdose und Lüftung — vorne bleibt eine ruhige Front."],
+      ["Bad mit Spiegelbeleuchtung", "Feuchtraumtaugliche Möbel, Spiegelschrank, Leitung und Schutzbereich gleich mitgedacht."],
+      ["Ladeneinrichtung", "Tresen, Regale und Warenbeleuchtung als ein Projekt, abgestimmt auf Öffnungstermin und Abnahme."]
+    ]
+  }
+};
+
+const FACTS = [
+  ["01", "Ein Ansprechpartner", "Von Aufmaß bis Anschluss dieselbe Nummer. Keine Weiterleitung an einen Subunternehmer."],
+  ["02", "Eigene Werkstatt", "Wir fertigen im Haus. Änderungen kurz vor Montage sind machbar, nicht dramatisch."],
+  ["03", "Feste Termine", "Kein Leerlauf zwischen den Gewerken. Der Schrank steht und hat am selben Tag Strom."]
+];
+
+function sketchIcon(kind, color) {
+  const pts = kind === "tischlerei"
+    ? "1,11.5 3.6,4.2 6.4,10.4 9.2,3.6 12,10.2 14,6.4"
+    : kind === "elektrobau"
+      ? "8.6,0.8 3.2,7.6 7.2,7.9 4.8,14.2 11.6,6.2 7.4,6 9.4,1"
+      : "2,3.4 12.4,2.6 12,12.4 2.4,11.8 2,3.4 7.2,7.4 12.2,2.8";
+  return React.createElement("svg", {
+    width: 15, height: 15, viewBox: "0 0 15 15", "aria-hidden": "true",
+    style: { display: "block", overflow: "visible" }
+  }, React.createElement("polyline", {
+    points: pts, fill: "none", stroke: color, strokeWidth: 1.35,
+    strokeLinecap: "round", strokeLinejoin: "round"
+  }));
+}
+
+function pencilRule(seed, amp, color) {
+  const n = 70, pts = [];
+  for (let i = 0; i <= n; i++) {
+    const y = 7
+      + Math.sin(i * 1.71 + seed) * 1.4 * amp
+      + Math.sin(i * 0.41 + seed * 2.3) * 2.6 * amp
+      + Math.sin(i * 5.3 + seed * 0.7) * 0.55 * amp;
+    pts.push(((i / n) * 1000).toFixed(1) + "," + y.toFixed(2));
+  }
+  return React.createElement("svg", {
+    viewBox: "0 0 1000 14", preserveAspectRatio: "none", "aria-hidden": "true",
+    style: { display: "block", width: "100%", height: "14px" }
+  }, React.createElement("polyline", {
+    points: pts.join(" "), fill: "none", stroke: color, strokeWidth: 1.15,
+    vectorEffect: "non-scaling-stroke", strokeLinecap: "round"
+  }));
+}
+
+function traceSvg(dir, color) {
+  const pts = dir === "b"
+    ? "20,0 20,38 6,62 6,338 20,362 20,400"
+    : dir === "a"
+      ? "21,0 19.4,50 8,78 9.2,326 20.6,356 19.4,400"
+      : "20,0 20,400";
+  return React.createElement("svg", {
+    viewBox: "0 0 40 400", preserveAspectRatio: "none", "aria-hidden": "true",
+    style: { display: "block", width: "40px", height: "100%" }
+  }, React.createElement("polyline", {
+    points: pts, fill: "none", stroke: color,
+    strokeWidth: dir === "b" ? 1.6 : 1.15, vectorEffect: "non-scaling-stroke"
+  }));
+}
+
+function jag(p, seed) {
+  const pts = [];
+  const n = 26;
+  const amp = 14 * p;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const w = Math.sin((i * 12.9898 + seed) * 7.233) * amp + Math.sin(t * 19 + seed) * amp * 0.5;
+    pts.push({ t: t, w: w });
+  }
+  return pts;
+}
+
+class Component extends DCLogic {
+  state = { dir: "a", vp: "desktop", p: 0, tab: "tischlerei", menuOpen: false, sent: false, lb: -1, reduced: false, w: 1400, ch: 900 };
+
+  measure = () => {
+    const el = this._sc;
+    if (!el) return;
+    const ch = el.clientHeight || 900;
+    if (Math.abs(ch - this.state.ch) > 2 || window.innerWidth !== this.state.w) {
+      this.setState({ ch: ch, w: window.innerWidth });
+    }
+  };
+
+  componentDidMount() {
+    try {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      this.setState({ reduced: mq.matches });
+      this._mq = mq;
+      this._onMq = () => this.setState({ reduced: mq.matches });
+      mq.addEventListener("change", this._onMq);
+    } catch (e) {}
+    this._onKey = (e) => { if (e.key === "Escape") this.setState({ lb: -1, menuOpen: false }); };
+    window.addEventListener("keydown", this._onKey);
+    this._onResize = this.measure;
+    window.addEventListener("resize", this._onResize);
+    this.measure();
+    this._raf = requestAnimationFrame(this.measure);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this._onKey);
+    window.removeEventListener("resize", this._onResize);
+    if (this._mq && this._onMq) this._mq.removeEventListener("change", this._onMq);
+  }
+
+  handleScroll = (e) => {
+    const el = e.currentTarget;
+    const h = el.clientHeight || 1;
+    let p = el.scrollTop / h;
+    p = Math.max(0, Math.min(1, p));
+    if (this.state.reduced) p = p > 0.35 ? 1 : 0;
+    if (Math.abs(p - this.state.p) > 0.004) this.setState({ p: p });
+  };
+
+  setDir = (d) => () => { this.setState({ dir: d }); if (this._sc) this._sc.scrollTop = 0; };
+  setVp = (v) => () => { this.setState({ vp: v }); if (this._sc) this._sc.scrollTop = 0; };
+  setTab = (t) => () => this.setState({ tab: t });
+
+  renderVals() {
+    const s = this.state;
+    const dir = s.dir;
+    const mob = s.vp === "mobile";
+    const p = mob ? Math.min(1, s.p * 0.85) : s.p;
+    const ease = p * p * (3 - 2 * p);
+    const V = LEIST[s.tab];
+
+    const pad = mob ? "56px 20px" : "clamp(90px, 11vh, 150px) 0";
+    const inner = mob
+      ? { width: "100%", margin: "0 auto" }
+      : { width: "min(1180px, 88%)", margin: "0 auto" };
+
+    const rough = dir === "a" ? 1 : dir === "b" ? 0.5 : 0.18;
+    const CH = Math.max(300, s.ch);
+    const cl = (v, lo, hi) => Math.round(Math.max(lo, Math.min(hi, v)));
+    const heroTopPad = cl(CH * (dir === "c" ? 0.36 : 0.3), 96, 340);
+    const heroBotPad = cl(CH * 0.07, 24, 100);
+    const claimTop = cl(CH * 0.11, 62, 130);
+    const h1Px = cl(Math.min(s.w * (dir === "c" ? 0.05 : 0.04), CH * (dir === "c" ? 0.108 : 0.086)), 32, dir === "c" ? 88 : 68);
+    const heroH2Px = cl(Math.min(s.w * (dir === "c" ? 0.036 : 0.03), CH * (dir === "c" ? 0.062 : 0.054)), 22, dir === "c" ? 58 : 46);
+    const heroLead = CH < 620 ? 15 : 17;
+    const ruleAmp = dir === "a" ? 1 : dir === "b" ? 0.34 : 0.14;
+    const ruleColor = dir === "b" ? "rgba(168,92,46,.34)" : "rgba(42,35,28,.16)";
+    const off = (n) => (mob || dir === "c" ? 0 : dir === "a" ? n : n * 0.4);
+
+    // ---- fusion layers ----
+    let woodStyle, seamStyle, seamGlowStyle;
+    const edge0 = 50;
+
+    if (mob) {
+      const l = 1 - ease;
+      woodStyle = {
+        position: "absolute", inset: 0, overflow: "hidden",
+        clipPath: "none",
+        opacity: 0.25 + 0.75 * l,
+        transition: s.reduced ? "opacity .45s ease" : "none"
+      };
+      seamStyle = { display: "none" };
+      seamGlowStyle = {
+        position: "absolute", left: 0, right: 0, bottom: 0, height: "60%",
+        background: "linear-gradient(180deg, rgba(244,238,230,0), rgba(244,238,230," + (0.4 + 0.55 * ease) + "))",
+        pointerEvents: "none", zIndex: 6
+      };
+    } else if (dir === "a") {
+      const x = edge0 + 30 * ease;
+      const tilt = 16 * ease;
+      const pts = jag(ease, 3.1);
+      const poly = ["0% 0%"]
+        .concat(pts.map((q) => {
+          const ex = x - tilt / 2 + tilt * q.t + q.w * 0.55;
+          return ex.toFixed(2) + "% " + (q.t * 100).toFixed(2) + "%";
+        }).reverse())
+        .concat(["0% 100%"]);
+      // build top→bottom order
+      const ordered = ["0% 0%"].concat(pts.map((q) => {
+        const ex = x - tilt / 2 + tilt * q.t + q.w * 0.55;
+        return ex.toFixed(2) + "% " + (q.t * 100).toFixed(2) + "%";
+      })).concat(["0% 100%"]);
+      woodStyle = {
+        position: "absolute", inset: 0, overflow: "hidden", zIndex: 3,
+        clipPath: "polygon(" + ordered.join(", ") + ")",
+        opacity: 1 - 0.72 * ease,
+        filter: "blur(" + (10 * ease).toFixed(1) + "px)",
+        transition: s.reduced ? "all .5s ease" : "none"
+      };
+      seamStyle = {
+        position: "absolute", top: 0, bottom: 0, zIndex: 8,
+        left: "calc(" + x + "% - 1px)",
+        width: "2px",
+        background: "linear-gradient(180deg, rgba(42,35,28," + (0.9 - 0.85 * ease) + "), rgba(168,92,46," + (0.15 + 0.75 * ease) + "))",
+        transform: "rotate(" + (tilt * 0.11).toFixed(2) + "deg)",
+        transformOrigin: "50% 50%",
+        opacity: 1 - 0.55 * ease,
+        transition: s.reduced ? "all .5s ease" : "none"
+      };
+      seamGlowStyle = {
+        position: "absolute", top: 0, bottom: 0, zIndex: 7,
+        left: "calc(" + x + "% - 70px)", width: "140px",
+        background: "radial-gradient(closest-side, rgba(168,92,46," + (0.3 * ease) + "), rgba(168,92,46,0))",
+        pointerEvents: "none"
+      };
+    } else if (dir === "b") {
+      const teeth = 16;
+      const bite = 6 * ease;
+      const pts = [];
+      pts.push("0% 0%");
+      for (let i = 0; i <= teeth; i++) {
+        const y = (i / teeth) * 100;
+        const x = edge0 + (i % 2 === 0 ? -bite : bite);
+        pts.push(x.toFixed(2) + "% " + y.toFixed(2) + "%");
+      }
+      pts.push("0% 100%");
+      woodStyle = {
+        position: "absolute", inset: 0, overflow: "hidden", zIndex: 3,
+        clipPath: "polygon(" + pts.join(", ") + ")",
+        opacity: 1 - 0.68 * ease,
+        transition: s.reduced ? "all .5s ease" : "none"
+      };
+      seamStyle = {
+        position: "absolute", top: 0, bottom: 0, zIndex: 8,
+        left: "calc(" + edge0 + "% - " + (bite + 1) + "px)",
+        width: (2 * bite + 2) + "px",
+        background: "repeating-linear-gradient(180deg, rgba(168,92,46," + (0.25 + 0.7 * ease) + ") 0 22px, rgba(168,92,46,0) 22px 30px)",
+        boxShadow: "0 0 " + (26 * ease).toFixed(0) + "px rgba(168,92,46," + (0.5 * ease) + ")",
+        transition: s.reduced ? "all .5s ease" : "none"
+      };
+      seamGlowStyle = {
+        position: "absolute", top: 0, bottom: 0, left: "calc(" + edge0 + "% - 1px)", width: "2px", zIndex: 7,
+        background: "rgba(42,35,28," + (0.75 - 0.75 * ease) + ")"
+      };
+    } else {
+      const soft = 2 + 46 * ease;
+      const mid = edge0 + 12 * ease;
+      const mask = "linear-gradient(100deg, rgba(0,0,0,1) " + Math.max(0, mid - soft).toFixed(1) + "%, rgba(0,0,0,0) " + Math.min(100, mid + soft).toFixed(1) + "%)";
+      woodStyle = {
+        position: "absolute", inset: 0, overflow: "hidden", zIndex: 3,
+        WebkitMaskImage: mask, maskImage: mask,
+        opacity: 1 - 0.55 * ease,
+        transition: s.reduced ? "all .55s ease" : "none"
+      };
+      seamStyle = {
+        position: "absolute", top: 0, bottom: 0, zIndex: 8,
+        left: "calc(" + mid + "% - 0.5px)", width: "1px",
+        background: "linear-gradient(180deg, rgba(42,35,28,0), rgba(42,35,28," + (0.55 - 0.55 * ease) + ") 22%, rgba(42,35,28," + (0.55 - 0.55 * ease) + ") 78%, rgba(42,35,28,0))",
+        transition: s.reduced ? "all .55s ease" : "none"
+      };
+      seamGlowStyle = {
+        position: "absolute", inset: 0, zIndex: 7, pointerEvents: "none",
+        background: "radial-gradient(120% 70% at " + mid + "% 55%, rgba(168,92,46," + (0.22 * ease) + "), rgba(168,92,46,0) 60%)"
+      };
+    }
+
+    const headerBg = mob
+      ? "rgba(244,238,230," + (0.9 + 0.1 * ease) + ")"
+      : "rgba(244,238,230," + (0.92 + 0.08 * ease) + ")";
+
+    const galSpans = SPANS[dir];
+
+    return {
+      // controls
+      dirs: ["a", "b", "c"].map((k) => ({
+        label: DIRS[k].label,
+        pick: this.setDir(k),
+        style: {
+          padding: "7px 13px", fontSize: "13px", fontWeight: 600, cursor: "pointer",
+          borderRadius: "2px", border: "1px solid " + (dir === k ? COPPER : "#332d26"),
+          background: dir === k ? "rgba(168,92,46,.16)" : "transparent",
+          color: dir === k ? "#8C4A22" : "#6B5F52"
+        }
+      })),
+      vps: [["desktop", "Desktop"], ["mobile", "Mobil"]].map((v) => ({
+        label: v[1],
+        pick: this.setVp(v[0]),
+        style: {
+          padding: "7px 13px", fontSize: "13px", fontWeight: 600, cursor: "pointer",
+          borderRadius: "2px", border: "1px solid " + (s.vp === v[0] ? COPPER : "#332d26"),
+          background: s.vp === v[0] ? "rgba(168,92,46,.16)" : "transparent",
+          color: s.vp === v[0] ? "#8C4A22" : "#6B5F52"
+        }
+      })),
+      dirNote: DIRS[dir].note + (s.reduced ? " · reduzierte Bewegung aktiv" : ""),
+      pPct: Math.round(p * 100),
+
+      frameStyle: mob
+        ? { position: "relative", width: "402px", maxWidth: "100%", height: "100%", maxHeight: "860px", border: "1px solid #D9CDBB", borderRadius: "22px", overflow: "hidden", boxShadow: "0 30px 80px rgba(0,0,0,.55)" }
+        : { position: "relative", width: "100%", height: "100%" },
+      scrollStyle: {
+        position: "relative", height: "100%", overflowY: "auto", overflowX: "hidden",
+        background: mob
+          ? "linear-gradient(180deg, #C49A63 0%, #DCC9A8 " + (14 + 10 * ease) + "%, " + ANTH + " 42%, " + ANTH + " 100%)"
+          : ANTH,
+        color: CREAM, scrollBehavior: "smooth", WebkitOverflowScrolling: "touch"
+      },
+      scrollRef: (el) => { this._sc = el; if (el) requestAnimationFrame(this.measure); },
+      onScroll: this.handleScroll,
+
+      nav: [
+        { href: "#ueber-uns", label: "Über uns" },
+        { href: "#leistungen", label: "Leistungen" },
+        { href: "#galerie", label: "Galerie" },
+        { href: "#preise", label: "Preise" },
+        { href: "#kontakt", label: "Kontakt" }
+      ],
+      headerStyle: {
+        position: "sticky", top: 0, zIndex: 50,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        gap: "18px", padding: mob ? "12px 18px" : "14px clamp(20px, 6vw, 70px)",
+        background: headerBg,
+        backdropFilter: "blur(" + (4 + 10 * ease) + "px)",
+        WebkitBackdropFilter: "blur(" + (4 + 10 * ease) + "px)",
+        borderBottom: "1px solid rgba(42,35,28," + (0.05 + 0.09 * ease) + ")",
+        minHeight: "62px"
+      },
+      telStyle: {
+        display: "flex", alignItems: "center", gap: mob ? 0 : "9px",
+        padding: mob ? "0" : "10px 17px",
+        width: mob ? "42px" : "auto", height: mob ? "42px" : "auto",
+        justifyContent: "center",
+        background: COPPER, color: "#FFFFFF", fontWeight: 600, fontSize: "15px",
+        borderRadius: "2px", textDecoration: "none", whiteSpace: "nowrap", flex: "0 0 auto"
+      },
+      telTextStyle: mob ? { display: "none" } : { display: "inline" },
+      navStyle: mob ? { display: "none" } : { display: "flex", gap: "clamp(16px, 2.4vw, 34px)", alignItems: "center" },
+      burgerStyle: mob
+        ? { display: "block", width: "42px", height: "42px", background: "none", border: "1px solid #B9AB97", borderRadius: "2px", cursor: "pointer", padding: 0 }
+        : { display: "none" },
+      menuOpen: s.menuOpen,
+      toggleMenu: () => this.setState({ menuOpen: !s.menuOpen }),
+      closeMenu: () => this.setState({ menuOpen: false }),
+
+      runwayStyle: { position: "relative", height: mob ? "100%" : "200%", marginTop: "-62px" },
+      heroPinStyle: mob
+        ? {
+            position: "relative", overflow: "hidden",
+            display: "flex", flexDirection: "column", justifyContent: "flex-end",
+            minHeight: Math.max(CH, 500) + "px",
+            paddingTop: "84px", paddingBottom: "62px"
+          }
+        : { position: "sticky", top: 0, height: "50%", minHeight: "0", overflow: "hidden", display: "block" },
+      woodStyle: woodStyle,
+      seamStyle: seamStyle,
+      seamGlowStyle: seamGlowStyle,
+
+      heroGridStyle: mob
+        ? { order: 2, position: "relative", zIndex: 12, display: "flex", flexDirection: "column", gap: "30px", padding: "0 20px" }
+        : { position: "relative", zIndex: 12, height: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "end", padding: heroTopPad + "px clamp(20px, 6vw, 70px) " + heroBotPad + "px", gap: "clamp(20px, 5vw, 90px)", opacity: Math.max(0, 1 - ease * 1.35), pointerEvents: ease > 0.55 ? "none" : "auto", transition: s.reduced ? "opacity .5s ease" : "none" },
+      heroColLStyle: {
+        display: "flex", flexDirection: "column", gap: CH < 620 ? "10px" : "16px", alignItems: "flex-start", minWidth: 0,
+        transform: mob || CH < 640 ? "none" : "translateY(" + (dir === "a" ? -18 * (1 - ease) : 0) + "px)"
+      },
+      heroColRStyle: {
+        display: "flex", flexDirection: "column", gap: CH < 620 ? "10px" : "16px", alignItems: "flex-start", minWidth: 0,
+        transform: mob || CH < 640 ? "none" : "translateY(" + (dir === "a" ? 22 * (1 - ease) : dir === "c" ? 34 : 0) + "px)"
+      },
+      heroH2Style: {
+        fontFamily: "'Zodiak', Georgia, serif", fontWeight: 700,
+        fontSize: mob ? "clamp(28px, 8vw, 40px)" : heroH2Px + "px",
+        lineHeight: 1.04, letterSpacing: "-0.01em", color: CREAM, margin: "2px 0 4px"
+      },
+      scrollHintStyle: {
+        position: "absolute", left: 0, right: 0, bottom: "18px", zIndex: 12, pointerEvents: "none",
+        display: !mob && CH < 620 ? "none" : "flex",
+        justifyContent: mob ? "center" : "flex-start",
+        paddingLeft: mob ? 0 : "clamp(20px, 6vw, 70px)",
+        opacity: Math.max(0, 1 - ease * 2.4), transition: "opacity .3s ease"
+      },
+      heroLeadL: { fontSize: heroLead + "px", lineHeight: 1.6, color: "#4A3A28", maxWidth: "32ch", margin: 0 },
+      heroLeadR: { fontSize: heroLead + "px", lineHeight: 1.6, color: "#D6E4EE", maxWidth: "32ch", margin: 0 },
+      heroH2R: {
+        fontFamily: "'Zodiak', Georgia, serif", fontWeight: 700,
+        fontSize: mob ? "clamp(28px, 8vw, 40px)" : heroH2Px + "px",
+        lineHeight: 1.04, letterSpacing: "-0.01em", color: "#F4EEE6", margin: "2px 0 4px"
+      },
+      fuseVeilStyle: {
+        position: "absolute", inset: 0, zIndex: 6, pointerEvents: "none",
+        background: mob
+          ? "transparent"
+          : "linear-gradient(120deg, #F1E7D8 0%, #F4EEE6 45%, #EFE9E2 100%)",
+        opacity: mob ? 0 : Math.min(1, ease * 1.12),
+        transition: s.reduced ? "opacity .5s ease" : "none"
+      },
+      heroClaimStyle: mob
+        ? { order: 1, position: "relative", zIndex: 13, padding: "0 20px", marginBottom: "28px" }
+        : {
+            position: "absolute", zIndex: 13, pointerEvents: "none",
+            left: "clamp(20px, 6vw, 70px)", right: "52%",
+            top: (dir === "c" ? claimTop + 16 : claimTop) + "px",
+            textAlign: "left"
+          },
+      h1Style: {
+        fontFamily: "'Zodiak', Georgia, serif", fontWeight: 800,
+        fontSize: mob ? "clamp(34px, 11vw, 52px)" : h1Px + "px",
+        lineHeight: 0.98, letterSpacing: "-0.025em", margin: 0,
+        color: CREAM,
+        textShadow: "0 4px 40px rgba(244,238,230,.85)"
+      },
+
+      innerStyle: inner,
+      eyebrowStyle: {
+        display: "block", fontFamily: "'Switzer'", fontSize: "11px", letterSpacing: "0.3em",
+        textTransform: "uppercase", color: COPPER_INK, marginBottom: "16px"
+      },
+      h2Style: {
+        fontFamily: "'Zodiak', Georgia, serif", fontWeight: 700,
+        fontSize: mob ? "clamp(28px, 8vw, 36px)" : dir === "c" ? "clamp(40px, 4.2vw, 66px)" : "clamp(32px, 3.2vw, 50px)",
+        lineHeight: 1.06, letterSpacing: "-0.015em", color: CREAM, margin: "0 0 22px"
+      },
+
+      secUeberStyle: {
+        position: "relative", padding: pad,
+        background: "linear-gradient(180deg, rgba(196,154,99," + (0.3 * (1 - rough * 0.25)) + ") 0%, rgba(244,238,230,0) 62%)"
+      },
+      secStyle: { position: "relative", padding: pad },
+      secGalStyle: { position: "relative", padding: pad, background: "#EAE0D2" },
+      secKontaktStyle: {
+        position: "relative", padding: pad,
+        background: "linear-gradient(180deg, rgba(168,92,46,.1), rgba(244,238,230,0) 42%)"
+      },
+
+      ruleStyle: { position: "absolute", top: "-7px", left: 0, right: 0, zIndex: 2, pointerEvents: "none" },
+      rule1: pencilRule(1.3, ruleAmp, ruleColor),
+      rule2: pencilRule(3.9, ruleAmp, ruleColor),
+      rule3: pencilRule(6.1, ruleAmp, ruleColor),
+      rule4: pencilRule(8.7, ruleAmp, ruleColor),
+      rule5: pencilRule(11.2, ruleAmp, "rgba(168,92,46,.45)"),
+
+      traceStyle: {
+        position: "absolute", top: 0, bottom: 0, width: "40px", zIndex: 1, pointerEvents: "none",
+        left: mob ? "-6px" : "2.1%",
+        opacity: dir === "c" ? 0.32 : dir === "b" ? 0.85 : 0.55
+      },
+      traceSvg: traceSvg(dir, COPPER),
+      traceDotStyle: {
+        position: "absolute", top: "-4.5px", zIndex: 3, pointerEvents: "none",
+        left: mob ? "14px" : "calc(2.1% + 15.5px)",
+        width: "9px", height: "9px", borderRadius: "50%", background: COPPER,
+        boxShadow: "0 0 0 3px rgba(168,92,46,.16)"
+      },
+
+      ueberGridStyle: mob
+        ? { display: "flex", flexDirection: "column", gap: "30px" }
+        : {
+            display: "grid",
+            gridTemplateColumns: dir === "c" ? "1.15fr 0.85fr" : dir === "b" ? "1fr 1fr" : "1.25fr 0.75fr",
+            gap: "clamp(30px, 5vw, 74px)", alignItems: "start"
+          },
+      ueberSideStyle: mob
+        ? { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }
+        : { position: "relative", display: "flex", flexDirection: "column", gap: dir === "c" ? "40px" : "16px", marginRight: dir === "a" ? "-6vw" : "0" },
+      ueberImg1Style: {
+        width: "100%", height: mob ? "180px" : dir === "c" ? "300px" : "260px", objectFit: "cover", display: "block",
+        borderRadius: "2px", transform: mob ? "none" : "translateX(" + off(14) + "px)"
+      },
+      ueberImg2Style: {
+        width: mob ? "100%" : dir === "c" ? "72%" : "86%", height: mob ? "180px" : "220px", objectFit: "cover", display: "block",
+        borderRadius: "2px", alignSelf: dir === "c" ? "flex-end" : "flex-start",
+        transform: mob ? "none" : "translateX(" + off(-22) + "px)"
+      },
+
+      facts: FACTS.map((f, i) => ({
+        no: f[0], title: f[1], body: f[2],
+        style: {
+          paddingTop: "20px",
+          borderTop: "1px solid " + (dir === "b" ? "rgba(168,92,46,.4)" : "rgba(42,35,28,.12)"),
+          transform: mob ? "none" : "translateY(" + off(i === 1 ? 26 : i === 2 ? 12 : 0) + "px)"
+        }
+      })),
+      factGridStyle: mob
+        ? { display: "flex", flexDirection: "column", gap: "26px", marginTop: "44px" }
+        : { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(24px, 3vw, 48px)", marginTop: "clamp(50px, 7vh, 90px)" },
+
+      tabs: [["tischlerei", "Tischlerei"], ["elektrobau", "Elektrobau"], ["kombiniert", "Kombiniert"]].map((t) => {
+        const on = s.tab === t[0];
+        const ac = LEIST[t[0]].accent;
+        return {
+          label: t[1], pick: this.setTab(t[0]),
+          icon: sketchIcon(t[0], on ? ac : "#6B5F52"),
+          iconWrap: { display: "flex", alignItems: "center", flex: "0 0 auto" },
+          style: {
+            display: "inline-flex", alignItems: "center", gap: "9px",
+            padding: mob ? "12px 16px" : "13px 22px", fontSize: "16px", fontWeight: 600, cursor: "pointer",
+            borderRadius: "2px", border: "1px solid " + (on ? ac : "#D9CDBB"),
+            background: on ? "rgba(168,92,46,.12)" : "transparent",
+            color: on ? CREAM : SEC,
+            transition: "border-color .25s ease, background .25s ease, color .25s ease"
+          }
+        };
+      }),
+      tabAccent: V.accent,
+      tabIntro: V.intro,
+      leistungen: V.items.map((it, i) => ({
+        no: "0" + (i + 1), title: it[0], body: it[1],
+        style: {
+          padding: dir === "b" ? "20px 0" : "22px 0",
+          borderTop: "1px solid rgba(42,35,28,.1)",
+          transform: mob || dir !== "a" ? "none" : "translateX(" + (i % 2 ? 18 : 0) + "px)"
+        }
+      })),
+      leistGridStyle: mob
+        ? { display: "flex", flexDirection: "column" }
+        : dir === "b"
+          ? { display: "grid", gridTemplateColumns: "1fr 1fr", columnGap: "clamp(30px, 4vw, 64px)" }
+          : { display: "flex", flexDirection: "column", maxWidth: dir === "c" ? "78ch" : "100%" },
+
+      galerie: GAL.map((g, i) => ({
+        src: g.src, alt: g.alt, cap: g.cap,
+        open: () => this.setState({ lb: i }),
+        style: {
+          position: "relative", overflow: "hidden", padding: 0, border: "none", cursor: "zoom-in",
+          background: "#FBF7F1", borderRadius: "2px",
+          gridRow: galSpans[i].split(" / ")[0],
+          gridColumn: galSpans[i].split(" / ")[1],
+          transform: mob || dir !== "c" ? "none" : "translateY(" + (i % 3 === 1 ? 26 : i % 3 === 2 ? -14 : 0) + "px)",
+          minHeight: mob ? "150px" : "0"
+        }
+      })),
+      galGridStyle: mob
+        ? { display: "grid", gridTemplateColumns: "1fr 1fr", gridAutoRows: "110px", gap: "10px", marginTop: "26px" }
+        : {
+            display: "grid",
+            gridTemplateColumns: dir === "b" ? "repeat(4, 1fr)" : "repeat(4, 1fr)",
+            gridAutoRows: dir === "c" ? "190px" : "165px",
+            gap: dir === "a" ? "10px" : dir === "b" ? "6px" : "22px",
+            marginTop: "clamp(34px, 5vh, 60px)"
+          },
+
+      kontaktGridStyle: mob
+        ? { display: "flex", flexDirection: "column", gap: "40px", marginTop: "30px" }
+        : { display: "grid", gridTemplateColumns: dir === "c" ? "1.1fr 0.9fr" : "1fr 1fr", gap: "clamp(34px, 5vw, 76px)", marginTop: "clamp(34px, 5vh, 56px)", alignItems: "start" },
+      onSubmit: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      sent: s.sent,
+      submitLabel: s.sent ? "Anfrage abgeschickt" : "Angebot anfragen",
+
+      waStyle: {
+        position: "absolute",
+        right: mob ? "16px" : "26px", bottom: mob ? "16px" : "26px", zIndex: 60,
+        width: "54px", height: "54px", borderRadius: "50%", background: COPPER,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        boxShadow: "0 8px 26px rgba(0,0,0,.45)", textDecoration: "none"
+      },
+
+      lightbox: s.lb >= 0,
+      lightboxSrc: s.lb >= 0 ? GAL[s.lb].src : "",
+      lightboxAlt: s.lb >= 0 ? GAL[s.lb].alt : "",
+      lightboxCap: s.lb >= 0 ? GAL[s.lb].cap : "",
+      closeLightbox: () => this.setState({ lb: -1 }),
+
+      pickTischler: () => this.setState({ tab: "tischlerei" }),
+      pickElektro: () => this.setState({ tab: "elektrobau" })
+    };
+  }
+}
+</script>
+</body>
+</html>
